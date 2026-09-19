@@ -69,12 +69,7 @@
         <div style="text-align:center;margin-bottom:8px;font-size:24px;font-weight:700;color:#0f4d42;">Employee Information</div>
         <div style="text-align:center;font-size:13px;color:#6b6252;margin-bottom:28px;">Please complete all required fields marked with <span style="color:#ed3101;">*</span>.</div>
 
-        <sc-if value="{{ validationError }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:24px;padding:12px 14px;background:#fdece7;border-radius:8px;border:1px solid #f3b8a5;">
-            <i class="ph ph-warning-circle" style="color:#ed3101;font-size:16px;margin-top:2px;"></i>
-            <div style="font-size:13px;color:#ed3101;line-height:1.5;">{{ validationError }}</div>
-          </div>
-        </sc-if>
+
 
         <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">Employee Name — English</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:28px;">
@@ -383,6 +378,13 @@
           </div>
         </div>
 
+        <sc-if value="{{ validationError }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:16px;padding:12px 14px;background:#fdece7;border-radius:8px;border:1px solid #f3b8a5;">
+            <i class="ph ph-warning-circle" style="color:#ed3101;font-size:16px;margin-top:2px;flex-shrink:0;"></i>
+            <div style="font-size:13px;color:#ed3101;line-height:1.8;white-space:pre-line;">{{ validationError }}</div>
+          </div>
+        </sc-if>
+
         <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1px solid #ecdfbf;padding-top:24px;">
           <button onClick="{{ onCancel }}" style="background:#fff;color:#0f4d42;border:1px solid #0f4d42;border-radius:8px;padding:12px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#eef6f3;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">Cancel</button>
           <button onClick="{{ onSubmitClick }}" style="background:#ed3101;color:#fff;border:none;border-radius:8px;padding:12px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">Submit</button>
@@ -400,6 +402,23 @@
         <div style="font-size:20px;font-weight:700;color:#0f4d42;margin-bottom:8px;">Submitted &amp; Locked</div>
         <div style="font-size:14px;color:#6b6252;line-height:1.6;margin-bottom:24px;">Thank you. Your responses have been recorded and this ID (<strong>{{ employeeId }}</strong>) is now locked — it cannot be used to edit or resubmit this survey.</div>
         <button onClick="{{ onCancel }}" style="background:#0f4d42;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#0b3a32;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">Done</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showValidationError }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:rgba(15,20,15,0.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;">
+      <div style="background:#ffffff;border-radius:16px;padding:28px;max-width:460px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.3);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#fdece7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="ph ph-warning-circle" style="font-size:20px;color:#ed3101;"></i>
+          </div>
+          <div style="font-size:17px;font-weight:700;color:#ed3101;">Please fix the following</div>
+        </div>
+        <div style="font-size:13px;color:#4a4436;line-height:1.8;margin-bottom:22px;max-height:300px;overflow-y:auto;">{{ validationError }}</div>
+        <div style="display:flex;justify-content:flex-end;">
+          <button onClick="{{ onCloseValidation }}" style="background:#ed3101;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;">OK, fix it</button>
+        </div>
       </div>
     </div>
   </sc-if>
@@ -441,7 +460,7 @@ class Component extends DCLogic {
       this.elRefs[n] = null;
       this.refs_[n] = (el) => { this.elRefs[n] = el; };
     });
-    this.state = { step: 'verify', idInput: '', idError: '', employeeId: '', validationError: '', showConfirm: false, loadingIds: true, loadError: '' };
+    this.state = { step: 'verify', idInput: '', idError: '', employeeId: '', validationError: '', showConfirm: false, showValidationError: false, loadingIds: true, loadError: '' };
   }
 
   componentDidMount() {
@@ -509,11 +528,13 @@ class Component extends DCLogic {
     const all = [];
     if (missing.length) all.push('Missing required fields: ' + missing.join(', '));
     if (invalid.length) invalid.forEach(e => all.push(e));
-    if (all.length) { this.setState({ validationError: all.join(' | ') }); return; }
+    if (all.length) { this.setState({ validationError: all.join('\n'), showValidationError: true }); return; }
     this.setState({ showConfirm: true, validationError: '' });
   };
 
   handleGoBackModal = () => this.setState({ showConfirm: false });
+
+  handleCloseValidation = () => this.setState({ showValidationError: false });
 
   handleConfirmSubmit = () => {
     const r = this.elRefs;
@@ -578,6 +599,8 @@ class Component extends DCLogic {
       idError: this.state.idError,
       employeeId: this.state.employeeId,
       validationError: this.state.validationError,
+      showValidationError: this.state.showValidationError,
+      onCloseValidation: this.handleCloseValidation,
       onIdInputChange: this.handleIdInputChange,
       onVerify: this.handleVerify,
       onCancel: this.handleReset,
