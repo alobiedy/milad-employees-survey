@@ -55,7 +55,7 @@
           </div>
         </sc-if>
 
-        <button onClick="{{ onVerify }}" style="width:100%;margin-top:20px;background:#ed3101;color:#ffffff;border:none;border-radius:8px;padding:13px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;" style-active="background:#a82201;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">{{ loadingIds ? 'Loading...' : 'Continue' }}</button>
+        <button onClick="{{ onVerify }}" style="width:100%;margin-top:20px;background:#ed3101;color:#ffffff;border:none;border-radius:8px;padding:13px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;" style-active="background:#a82201;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">{{ verifyBtnText }}</button>
 
         <div style="font-size:12px;color:#a89a72;margin-top:16px;text-align:center;">Your ID is checked against Milad's employee records.</div>
       </div>
@@ -548,6 +548,7 @@ class Component extends DCLogic {
       isDoneStep: this.state.step === 'done',
       showConfirm: this.state.showConfirm,
       loadingIds: this.state.loadingIds,
+      verifyBtnText: this.state.loadingIds ? 'Loading...' : 'Continue',
       loadError: this.state.loadError,
       idInput: this.state.idInput,
       idError: this.state.idError,
