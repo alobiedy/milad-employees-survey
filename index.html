@@ -9,23 +9,23 @@
 <x-dc>
 <helmet>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
   <style>
     body { margin: 0; }
     input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.3) sepia(1) saturate(4) hue-rotate(0deg); cursor: pointer; }
   </style>
 </helmet>
-<div style="min-height:100vh;background:#f6efe0;font-family:'Inter',sans-serif;color:#1b1b1b;">
+<div style="min-height:100vh;background:#f6efe0;font-family:'Inter',sans-serif;color:#1b1b1b;" dir="{{ pageDir }}">
 
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:#ffffff;border-bottom:1px solid #ecdfbf;">
     <img src="assets/milad-logo.png" alt="Milad" style="height:42px;width:auto;object-fit:contain;">
-    <div style="display:flex;gap:8px;">
-      <div style="padding:6px 14px;border-radius:20px;background:#0f4d42;color:#ffffff;font-size:13px;font-weight:600;">EN</div>
-      <div style="padding:6px 14px;border-radius:20px;border:1px solid #d9c9a0;color:#8a7a52;font-size:13px;font-weight:500;">عربي</div>
-      <div style="padding:6px 14px;border-radius:20px;border:1px solid #d9c9a0;color:#8a7a52;font-size:13px;font-weight:500;">TR</div>
-      <div style="padding:6px 14px;border-radius:20px;border:1px solid #d9c9a0;color:#8a7a52;font-size:13px;font-weight:500;">اردو</div>
-      <div style="padding:6px 14px;border-radius:20px;border:1px solid #d9c9a0;color:#8a7a52;font-size:13px;font-weight:500;">বাংলা</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div onClick="{{ onLangEN }}" style="{{ langBtnEN }}" >EN</div>
+      <div onClick="{{ onLangAR }}" style="{{ langBtnAR }}">عربي</div>
+      <div onClick="{{ onLangTR }}" style="{{ langBtnTR }}">TR</div>
+      <div onClick="{{ onLangUR }}" style="{{ langBtnUR }}">اردو</div>
+      <div onClick="{{ onLangBN }}" style="{{ langBtnBN }}">বাংলা</div>
     </div>
   </div>
 
@@ -35,10 +35,10 @@
         <div style="width:52px;height:52px;border-radius:12px;background:#fee4b3;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
           <i class="ph ph-identification-card" style="font-size:26px;color:#ed3101;"></i>
         </div>
-        <div style="font-size:22px;font-weight:700;color:#0f4d42;margin-bottom:6px;">Employee Verification</div>
-        <div style="font-size:14px;color:#6b6252;line-height:1.5;margin-bottom:24px;">Enter your ID / Iqama number to start the Milad employee survey.</div>
+        <div style="font-size:22px;font-weight:700;color:#0f4d42;margin-bottom:6px;">{{ t.verifyTitle }}</div>
+        <div style="font-size:14px;color:#6b6252;line-height:1.5;margin-bottom:24px;">{{ t.verifySubtitle }}</div>
 
-        <label style="display:block;font-size:13px;font-weight:600;color:#1b1b1b;margin-bottom:6px;">ID / Iqama Number</label>
+        <label style="display:block;font-size:13px;font-weight:600;color:#1b1b1b;margin-bottom:6px;">{{ t.idLabel }}</label>
         <input type="text" placeholder="e.g. 1140799303" value="{{ idInput }}" onChange="{{ onIdInputChange }}" style="width:100%;box-sizing:border-box;border:1px solid #d9c9a0;border-radius:8px;padding:12px 14px;font-size:15px;font-family:inherit;background:#fff;color:#1b1b1b;" style-focus="border-color:#fba91f;box-shadow:0 0 0 3px rgba(251,169,31,0.25);outline:none;">
 
         <sc-if value="{{ idError }}" hint-placeholder-val="{{ false }}">
@@ -57,7 +57,7 @@
 
         <button onClick="{{ onVerify }}" style="width:100%;margin-top:20px;background:#ed3101;color:#ffffff;border:none;border-radius:8px;padding:13px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;" style-active="background:#a82201;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">{{ verifyBtnText }}</button>
 
-        <div style="font-size:12px;color:#a89a72;margin-top:16px;text-align:center;">Your ID is checked against Milad's employee records.</div>
+        <div style="font-size:12px;color:#a89a72;margin-top:16px;text-align:center;">{{ t.verifyNote }}</div>
       </div>
     </div>
   </sc-if>
@@ -66,20 +66,18 @@
     <div style="max-width:800px;margin:0 auto;padding:40px 20px 80px;">
       <div style="background:#ffffff;border:1px solid #ecdfbf;border-radius:16px;padding:40px;box-shadow:0 4px 20px rgba(15,77,66,0.08);">
 
-        <div style="text-align:center;margin-bottom:8px;font-size:24px;font-weight:700;color:#0f4d42;">Employee Information</div>
-        <div style="text-align:center;font-size:13px;color:#6b6252;margin-bottom:28px;">Please complete all required fields marked with <span style="color:#ed3101;">*</span>.</div>
+        <div style="text-align:center;margin-bottom:8px;font-size:24px;font-weight:700;color:#0f4d42;">{{ t.formTitle }}</div>
+        <div style="text-align:center;font-size:13px;color:#6b6252;margin-bottom:28px;">{{ t.formSubtitle }} <span style="color:#ed3101;">*</span>.</div>
 
-
-
-        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">Employee Name — English</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">{{ t.secNameEN }}</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:28px;">
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">First Name <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.firstNameEn }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Second Name <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.secondNameEn }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Third Name <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.thirdNameEn }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Family Name <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.familyNameEn }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.firstName }} <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.firstNameEn }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.secondName }} <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.secondNameEn }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.thirdName }} <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.thirdNameEn }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.familyName }} <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.familyNameEn }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
         </div>
 
-        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">Employee Name — Arabic</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">{{ t.secNameAR }}</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:28px;" dir="rtl">
           <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">الاسم الأول <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.firstNameAr }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
           <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">الاسم الثاني <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.secondNameAr }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
@@ -87,11 +85,11 @@
           <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">اسم العائلة <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.familyNameAr }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
         </div>
 
-        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">Contact</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">{{ t.secContact }}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Email Address <span style="color:#ed3101;">*</span></label><input type="email" ref="{{ refs.email }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.email }} <span style="color:#ed3101;">*</span></label><input type="email" ref="{{ refs.email }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
           <div>
-            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Mobile Number <span style="color:#ed3101;">*</span> <span style="color:#6b6252;font-weight:500;">(Registered with Absher)</span></label>
+            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.mobile }} <span style="color:#ed3101;">*</span> <span style="color:#6b6252;font-weight:500;">{{ t.absher }}</span></label>
             <div style="display:flex;">
               <div style="display:flex;align-items:center;padding:0 12px;border:1px solid #d9c9a0;border-right:none;border-radius:8px 0 0 8px;background:#fee4b3;font-size:14px;font-weight:600;color:#0f4d42;">+966</div>
               <input type="text" placeholder="5XXXXXXXX" ref="{{ refs.mobile }}" style="flex:1;box-sizing:border-box;border:1px solid #d9c9a0;border-radius:0 8px 8px 0;padding:10px 12px;font-size:14px;font-family:inherit;background:#fff;color:#1b1b1b;" style-focus="{{ inputFocusStyle }}">
@@ -99,7 +97,7 @@
           </div>
         </div>
         <div style="margin-bottom:28px;">
-          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">WhatsApp Number (Home Country) <span style="color:#ed3101;">*</span></label>
+          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.whatsapp }} <span style="color:#ed3101;">*</span></label>
           <div style="display:flex;">
             <select ref="{{ refs.whatsappCode }}" style="width:110px;box-sizing:border-box;border:1px solid #d9c9a0;border-right:none;border-radius:8px 0 0 8px;padding:10px 8px;font-size:14px;font-family:inherit;background:#fee4b3;color:#0f4d42;font-weight:600;" style-focus="{{ inputFocusStyle }}">
               <option value="">Code</option>
@@ -116,30 +114,30 @@
           </div>
         </div>
 
-        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">Personal Details</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">{{ t.secPersonal }}</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:16px;">
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Date of Birth <span style="color:#ed3101;">*</span></label><input type="date" ref="{{ refs.dob }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.dob }} <span style="color:#ed3101;">*</span></label><input type="date" ref="{{ refs.dob }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
           <div>
-            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Gender <span style="color:#ed3101;">*</span></label>
+            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.gender }} <span style="color:#ed3101;">*</span></label>
             <select ref="{{ refs.gender }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
-              <option value="">-- Select --</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              <option value="">{{ t.select }}</option>
+              <option value="Male">{{ t.male }}</option>
+              <option value="Female">{{ t.female }}</option>
             </select>
           </div>
           <div>
-            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Marital Status <span style="color:#ed3101;">*</span></label>
+            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.marital }} <span style="color:#ed3101;">*</span></label>
             <select ref="{{ refs.maritalStatus }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
-              <option value="">-- Select --</option>
-              <option value="Single">Single</option>
-              <option value="Married">Married</option>
-              <option value="Divorced">Divorced</option>
-              <option value="Widowed">Widowed</option>
+              <option value="">{{ t.select }}</option>
+              <option value="Single">{{ t.single }}</option>
+              <option value="Married">{{ t.married }}</option>
+              <option value="Divorced">{{ t.divorced }}</option>
+              <option value="Widowed">{{ t.widowed }}</option>
             </select>
           </div>
         </div>
         <div style="margin-bottom:16px;">
-          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Address — English (Home Country) <span style="color:#ed3101;">*</span></label>
+          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.addressEn }} <span style="color:#ed3101;">*</span></label>
           <textarea ref="{{ refs.addressEn }}" rows="2" style="{{ inputStyle }} resize:vertical;" style-focus="{{ inputFocusStyle }}"></textarea>
         </div>
         <div style="margin-bottom:28px;" dir="rtl">
@@ -147,233 +145,38 @@
           <textarea ref="{{ refs.addressAr }}" rows="2" style="{{ inputStyle }} resize:vertical;" style-focus="{{ inputFocusStyle }}"></textarea>
         </div>
 
-        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">Documents</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">{{ t.secDocs }}</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:16px;">
           <div>
-            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">ID Number / Iqama Number</label>
+            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.idNumber }}</label>
             <input type="text" value="{{ employeeId }}" disabled="{{ true }}" style="width:100%;box-sizing:border-box;border:1px solid #d9c9a0;border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;background:#f2ead4;color:#6b6252;">
           </div>
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">ID / Iqama Expiry Date <span style="color:#ed3101;">*</span></label><input type="date" ref="{{ refs.idExpiry }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">ID Copy Number <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.idCopyNumber }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.idExpiry }} <span style="color:#ed3101;">*</span></label><input type="date" ref="{{ refs.idExpiry }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.idCopy }} <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.idCopyNumber }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
         </div>
 
         <div style="margin-bottom:16px;">
-          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:8px;">Do you have a Health Card? <span style="color:#ed3101;">*</span></label>
+          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:8px;">{{ t.healthCard }} <span style="color:#ed3101;">*</span></label>
           <div style="display:flex;gap:24px;">
-            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="radio" name="healthCard" ref="{{ refs.healthCardYes }}" style="width:16px;height:16px;accent-color:#ed3101;">Yes</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="radio" name="healthCard" ref="{{ refs.healthCardNo }}" style="width:16px;height:16px;accent-color:#ed3101;">No</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="radio" name="healthCard" ref="{{ refs.healthCardYes }}" style="width:16px;height:16px;accent-color:#ed3101;">{{ t.yes }}</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="radio" name="healthCard" ref="{{ refs.healthCardNo }}" style="width:16px;height:16px;accent-color:#ed3101;">{{ t.no }}</label>
           </div>
         </div>
 
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:28px;">
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Passport Number <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.passportNumber }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Passport Expiry Date <span style="color:#ed3101;">*</span></label><input type="date" ref="{{ refs.passportExpiry }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Degree (Optional)</label><input type="text" ref="{{ refs.degree }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.passport }} <span style="color:#ed3101;">*</span></label><input type="text" ref="{{ refs.passportNumber }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.passportExpiry }} <span style="color:#ed3101;">*</span></label><input type="date" ref="{{ refs.passportExpiry }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.degree }}</label><input type="text" ref="{{ refs.degree }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
         </div>
 
-        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">Additional Information</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#0f4d42;text-transform:uppercase;border-bottom:1px solid #ecdfbf;padding-bottom:8px;margin-bottom:16px;">{{ t.secAdditional }}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;">
-          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">National Address (Optional)</label><input type="text" ref="{{ refs.nationalAddress }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.nationalAddress }}</label><input type="text" ref="{{ refs.nationalAddress }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></div>
           <div>
-            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Nationality <span style="color:#ed3101;">*</span></label>
+            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">{{ t.nationality }} <span style="color:#ed3101;">*</span></label>
             <select ref="{{ refs.nationality }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
-              <option value="">-- Select --</option>
-              <option value="Afghanistan">Afghanistan</option>
-              <option value="Albania">Albania</option>
-              <option value="Algeria">Algeria</option>
-              <option value="Andorra">Andorra</option>
-              <option value="Angola">Angola</option>
-              <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-              <option value="Argentina">Argentina</option>
-              <option value="Armenia">Armenia</option>
-              <option value="Australia">Australia</option>
-              <option value="Austria">Austria</option>
-              <option value="Azerbaijan">Azerbaijan</option>
-              <option value="Bahamas">Bahamas</option>
-              <option value="Bahrain">Bahrain</option>
-              <option value="Bangladesh">Bangladesh</option>
-              <option value="Barbados">Barbados</option>
-              <option value="Belarus">Belarus</option>
-              <option value="Belgium">Belgium</option>
-              <option value="Belize">Belize</option>
-              <option value="Benin">Benin</option>
-              <option value="Bhutan">Bhutan</option>
-              <option value="Bolivia">Bolivia</option>
-              <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-              <option value="Botswana">Botswana</option>
-              <option value="Brazil">Brazil</option>
-              <option value="Brunei">Brunei</option>
-              <option value="Bulgaria">Bulgaria</option>
-              <option value="Burkina Faso">Burkina Faso</option>
-              <option value="Burundi">Burundi</option>
-              <option value="Cabo Verde">Cabo Verde</option>
-              <option value="Cambodia">Cambodia</option>
-              <option value="Cameroon">Cameroon</option>
-              <option value="Canada">Canada</option>
-              <option value="Central African Republic">Central African Republic</option>
-              <option value="Chad">Chad</option>
-              <option value="Chile">Chile</option>
-              <option value="China">China</option>
-              <option value="Colombia">Colombia</option>
-              <option value="Comoros">Comoros</option>
-              <option value="Congo (DRC)">Congo (DRC)</option>
-              <option value="Congo (Republic)">Congo (Republic)</option>
-              <option value="Costa Rica">Costa Rica</option>
-              <option value="Croatia">Croatia</option>
-              <option value="Cuba">Cuba</option>
-              <option value="Cyprus">Cyprus</option>
-              <option value="Czech Republic">Czech Republic</option>
-              <option value="Denmark">Denmark</option>
-              <option value="Djibouti">Djibouti</option>
-              <option value="Dominica">Dominica</option>
-              <option value="Dominican Republic">Dominican Republic</option>
-              <option value="Ecuador">Ecuador</option>
-              <option value="Egypt">Egypt</option>
-              <option value="El Salvador">El Salvador</option>
-              <option value="Equatorial Guinea">Equatorial Guinea</option>
-              <option value="Eritrea">Eritrea</option>
-              <option value="Estonia">Estonia</option>
-              <option value="Eswatini">Eswatini</option>
-              <option value="Ethiopia">Ethiopia</option>
-              <option value="Fiji">Fiji</option>
-              <option value="Finland">Finland</option>
-              <option value="France">France</option>
-              <option value="Gabon">Gabon</option>
-              <option value="Gambia">Gambia</option>
-              <option value="Georgia">Georgia</option>
-              <option value="Germany">Germany</option>
-              <option value="Ghana">Ghana</option>
-              <option value="Greece">Greece</option>
-              <option value="Grenada">Grenada</option>
-              <option value="Guatemala">Guatemala</option>
-              <option value="Guinea">Guinea</option>
-              <option value="Guinea-Bissau">Guinea-Bissau</option>
-              <option value="Guyana">Guyana</option>
-              <option value="Haiti">Haiti</option>
-              <option value="Honduras">Honduras</option>
-              <option value="Hungary">Hungary</option>
-              <option value="Iceland">Iceland</option>
-              <option value="India">India</option>
-              <option value="Indonesia">Indonesia</option>
-              <option value="Iran">Iran</option>
-              <option value="Iraq">Iraq</option>
-              <option value="Ireland">Ireland</option>
-              <option value="Israel">Israel</option>
-              <option value="Italy">Italy</option>
-              <option value="Jamaica">Jamaica</option>
-              <option value="Japan">Japan</option>
-              <option value="Jordan">Jordan</option>
-              <option value="Kazakhstan">Kazakhstan</option>
-              <option value="Kenya">Kenya</option>
-              <option value="Kiribati">Kiribati</option>
-              <option value="Kosovo">Kosovo</option>
-              <option value="Kuwait">Kuwait</option>
-              <option value="Kyrgyzstan">Kyrgyzstan</option>
-              <option value="Laos">Laos</option>
-              <option value="Latvia">Latvia</option>
-              <option value="Lebanon">Lebanon</option>
-              <option value="Lesotho">Lesotho</option>
-              <option value="Liberia">Liberia</option>
-              <option value="Libya">Libya</option>
-              <option value="Liechtenstein">Liechtenstein</option>
-              <option value="Lithuania">Lithuania</option>
-              <option value="Luxembourg">Luxembourg</option>
-              <option value="Madagascar">Madagascar</option>
-              <option value="Malawi">Malawi</option>
-              <option value="Malaysia">Malaysia</option>
-              <option value="Maldives">Maldives</option>
-              <option value="Mali">Mali</option>
-              <option value="Malta">Malta</option>
-              <option value="Marshall Islands">Marshall Islands</option>
-              <option value="Mauritania">Mauritania</option>
-              <option value="Mauritius">Mauritius</option>
-              <option value="Mexico">Mexico</option>
-              <option value="Micronesia">Micronesia</option>
-              <option value="Moldova">Moldova</option>
-              <option value="Monaco">Monaco</option>
-              <option value="Mongolia">Mongolia</option>
-              <option value="Montenegro">Montenegro</option>
-              <option value="Morocco">Morocco</option>
-              <option value="Mozambique">Mozambique</option>
-              <option value="Myanmar">Myanmar</option>
-              <option value="Namibia">Namibia</option>
-              <option value="Nauru">Nauru</option>
-              <option value="Nepal">Nepal</option>
-              <option value="Netherlands">Netherlands</option>
-              <option value="New Zealand">New Zealand</option>
-              <option value="Nicaragua">Nicaragua</option>
-              <option value="Niger">Niger</option>
-              <option value="Nigeria">Nigeria</option>
-              <option value="North Korea">North Korea</option>
-              <option value="North Macedonia">North Macedonia</option>
-              <option value="Norway">Norway</option>
-              <option value="Oman">Oman</option>
-              <option value="Pakistan">Pakistan</option>
-              <option value="Palau">Palau</option>
-              <option value="Palestine">Palestine</option>
-              <option value="Panama">Panama</option>
-              <option value="Papua New Guinea">Papua New Guinea</option>
-              <option value="Paraguay">Paraguay</option>
-              <option value="Peru">Peru</option>
-              <option value="Philippines">Philippines</option>
-              <option value="Poland">Poland</option>
-              <option value="Portugal">Portugal</option>
-              <option value="Qatar">Qatar</option>
-              <option value="Romania">Romania</option>
-              <option value="Russia">Russia</option>
-              <option value="Rwanda">Rwanda</option>
-              <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-              <option value="Saint Lucia">Saint Lucia</option>
-              <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
-              <option value="Samoa">Samoa</option>
-              <option value="San Marino">San Marino</option>
-              <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-              <option value="Saudi Arabia">Saudi Arabia</option>
-              <option value="Senegal">Senegal</option>
-              <option value="Serbia">Serbia</option>
-              <option value="Seychelles">Seychelles</option>
-              <option value="Sierra Leone">Sierra Leone</option>
-              <option value="Singapore">Singapore</option>
-              <option value="Slovakia">Slovakia</option>
-              <option value="Slovenia">Slovenia</option>
-              <option value="Solomon Islands">Solomon Islands</option>
-              <option value="Somalia">Somalia</option>
-              <option value="South Africa">South Africa</option>
-              <option value="South Korea">South Korea</option>
-              <option value="South Sudan">South Sudan</option>
-              <option value="Spain">Spain</option>
-              <option value="Sri Lanka">Sri Lanka</option>
-              <option value="Sudan">Sudan</option>
-              <option value="Suriname">Suriname</option>
-              <option value="Sweden">Sweden</option>
-              <option value="Switzerland">Switzerland</option>
-              <option value="Syria">Syria</option>
-              <option value="Taiwan">Taiwan</option>
-              <option value="Tajikistan">Tajikistan</option>
-              <option value="Tanzania">Tanzania</option>
-              <option value="Thailand">Thailand</option>
-              <option value="Timor-Leste">Timor-Leste</option>
-              <option value="Togo">Togo</option>
-              <option value="Tonga">Tonga</option>
-              <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-              <option value="Tunisia">Tunisia</option>
-              <option value="Turkey">Turkey</option>
-              <option value="Turkmenistan">Turkmenistan</option>
-              <option value="Tuvalu">Tuvalu</option>
-              <option value="Uganda">Uganda</option>
-              <option value="Ukraine">Ukraine</option>
-              <option value="United Arab Emirates">United Arab Emirates</option>
-              <option value="United Kingdom">United Kingdom</option>
-              <option value="United States">United States</option>
-              <option value="Uruguay">Uruguay</option>
-              <option value="Uzbekistan">Uzbekistan</option>
-              <option value="Vanuatu">Vanuatu</option>
-              <option value="Vatican City">Vatican City</option>
-              <option value="Venezuela">Venezuela</option>
-              <option value="Vietnam">Vietnam</option>
-              <option value="Yemen">Yemen</option>
-              <option value="Zambia">Zambia</option>
-              <option value="Zimbabwe">Zimbabwe</option>
+              <option value="">{{ t.select }}</option>
+              <option value="Afghanistan">Afghanistan</option><option value="Albania">Albania</option><option value="Algeria">Algeria</option><option value="Andorra">Andorra</option><option value="Angola">Angola</option><option value="Antigua and Barbuda">Antigua and Barbuda</option><option value="Argentina">Argentina</option><option value="Armenia">Armenia</option><option value="Australia">Australia</option><option value="Austria">Austria</option><option value="Azerbaijan">Azerbaijan</option><option value="Bahamas">Bahamas</option><option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Barbados">Barbados</option><option value="Belarus">Belarus</option><option value="Belgium">Belgium</option><option value="Belize">Belize</option><option value="Benin">Benin</option><option value="Bhutan">Bhutan</option><option value="Bolivia">Bolivia</option><option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option><option value="Botswana">Botswana</option><option value="Brazil">Brazil</option><option value="Brunei">Brunei</option><option value="Bulgaria">Bulgaria</option><option value="Burkina Faso">Burkina Faso</option><option value="Burundi">Burundi</option><option value="Cabo Verde">Cabo Verde</option><option value="Cambodia">Cambodia</option><option value="Cameroon">Cameroon</option><option value="Canada">Canada</option><option value="Central African Republic">Central African Republic</option><option value="Chad">Chad</option><option value="Chile">Chile</option><option value="China">China</option><option value="Colombia">Colombia</option><option value="Comoros">Comoros</option><option value="Congo">Congo</option><option value="Costa Rica">Costa Rica</option><option value="Croatia">Croatia</option><option value="Cuba">Cuba</option><option value="Cyprus">Cyprus</option><option value="Czech Republic">Czech Republic</option><option value="Denmark">Denmark</option><option value="Djibouti">Djibouti</option><option value="Dominica">Dominica</option><option value="Dominican Republic">Dominican Republic</option><option value="Ecuador">Ecuador</option><option value="Egypt">Egypt</option><option value="El Salvador">El Salvador</option><option value="Equatorial Guinea">Equatorial Guinea</option><option value="Eritrea">Eritrea</option><option value="Estonia">Estonia</option><option value="Eswatini">Eswatini</option><option value="Ethiopia">Ethiopia</option><option value="Fiji">Fiji</option><option value="Finland">Finland</option><option value="France">France</option><option value="Gabon">Gabon</option><option value="Gambia">Gambia</option><option value="Georgia">Georgia</option><option value="Germany">Germany</option><option value="Ghana">Ghana</option><option value="Greece">Greece</option><option value="Grenada">Grenada</option><option value="Guatemala">Guatemala</option><option value="Guinea">Guinea</option><option value="Guinea-Bissau">Guinea-Bissau</option><option value="Guyana">Guyana</option><option value="Haiti">Haiti</option><option value="Honduras">Honduras</option><option value="Hungary">Hungary</option><option value="Iceland">Iceland</option><option value="India">India</option><option value="Indonesia">Indonesia</option><option value="Iran">Iran</option><option value="Iraq">Iraq</option><option value="Ireland">Ireland</option><option value="Israel">Israel</option><option value="Italy">Italy</option><option value="Jamaica">Jamaica</option><option value="Japan">Japan</option><option value="Jordan">Jordan</option><option value="Kazakhstan">Kazakhstan</option><option value="Kenya">Kenya</option><option value="Kiribati">Kiribati</option><option value="Kuwait">Kuwait</option><option value="Kyrgyzstan">Kyrgyzstan</option><option value="Laos">Laos</option><option value="Latvia">Latvia</option><option value="Lebanon">Lebanon</option><option value="Lesotho">Lesotho</option><option value="Liberia">Liberia</option><option value="Libya">Libya</option><option value="Liechtenstein">Liechtenstein</option><option value="Lithuania">Lithuania</option><option value="Luxembourg">Luxembourg</option><option value="Madagascar">Madagascar</option><option value="Malawi">Malawi</option><option value="Malaysia">Malaysia</option><option value="Maldives">Maldives</option><option value="Mali">Mali</option><option value="Malta">Malta</option><option value="Marshall Islands">Marshall Islands</option><option value="Mauritania">Mauritania</option><option value="Mauritius">Mauritius</option><option value="Mexico">Mexico</option><option value="Micronesia">Micronesia</option><option value="Moldova">Moldova</option><option value="Monaco">Monaco</option><option value="Mongolia">Mongolia</option><option value="Montenegro">Montenegro</option><option value="Morocco">Morocco</option><option value="Mozambique">Mozambique</option><option value="Myanmar">Myanmar</option><option value="Namibia">Namibia</option><option value="Nauru">Nauru</option><option value="Nepal">Nepal</option><option value="Netherlands">Netherlands</option><option value="New Zealand">New Zealand</option><option value="Nicaragua">Nicaragua</option><option value="Niger">Niger</option><option value="Nigeria">Nigeria</option><option value="North Korea">North Korea</option><option value="North Macedonia">North Macedonia</option><option value="Norway">Norway</option><option value="Oman">Oman</option><option value="Pakistan">Pakistan</option><option value="Palau">Palau</option><option value="Palestine">Palestine</option><option value="Panama">Panama</option><option value="Papua New Guinea">Papua New Guinea</option><option value="Paraguay">Paraguay</option><option value="Peru">Peru</option><option value="Philippines">Philippines</option><option value="Poland">Poland</option><option value="Portugal">Portugal</option><option value="Qatar">Qatar</option><option value="Romania">Romania</option><option value="Russia">Russia</option><option value="Rwanda">Rwanda</option><option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option><option value="Saint Lucia">Saint Lucia</option><option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option><option value="Samoa">Samoa</option><option value="San Marino">San Marino</option><option value="Sao Tome and Principe">Sao Tome and Principe</option><option value="Saudi Arabia">Saudi Arabia</option><option value="Senegal">Senegal</option><option value="Serbia">Serbia</option><option value="Seychelles">Seychelles</option><option value="Sierra Leone">Sierra Leone</option><option value="Singapore">Singapore</option><option value="Slovakia">Slovakia</option><option value="Slovenia">Slovenia</option><option value="Solomon Islands">Solomon Islands</option><option value="Somalia">Somalia</option><option value="South Africa">South Africa</option><option value="South Korea">South Korea</option><option value="South Sudan">South Sudan</option><option value="Spain">Spain</option><option value="Sri Lanka">Sri Lanka</option><option value="Sudan">Sudan</option><option value="Suriname">Suriname</option><option value="Sweden">Sweden</option><option value="Switzerland">Switzerland</option><option value="Syria">Syria</option><option value="Taiwan">Taiwan</option><option value="Tajikistan">Tajikistan</option><option value="Tanzania">Tanzania</option><option value="Thailand">Thailand</option><option value="Timor-Leste">Timor-Leste</option><option value="Togo">Togo</option><option value="Tonga">Tonga</option><option value="Trinidad and Tobago">Trinidad and Tobago</option><option value="Tunisia">Tunisia</option><option value="Turkey">Turkey</option><option value="Turkmenistan">Turkmenistan</option><option value="Tuvalu">Tuvalu</option><option value="Uganda">Uganda</option><option value="Ukraine">Ukraine</option><option value="United Arab Emirates">United Arab Emirates</option><option value="United Kingdom">United Kingdom</option><option value="United States">United States</option><option value="Uruguay">Uruguay</option><option value="Uzbekistan">Uzbekistan</option><option value="Vanuatu">Vanuatu</option><option value="Vatican City">Vatican City</option><option value="Venezuela">Venezuela</option><option value="Vietnam">Vietnam</option><option value="Yemen">Yemen</option><option value="Zambia">Zambia</option><option value="Zimbabwe">Zimbabwe</option>
             </select>
           </div>
         </div>
@@ -386,8 +189,8 @@
         </sc-if>
 
         <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1px solid #ecdfbf;padding-top:24px;">
-          <button onClick="{{ onCancel }}" style="background:#fff;color:#0f4d42;border:1px solid #0f4d42;border-radius:8px;padding:12px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#eef6f3;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">Cancel</button>
-          <button onClick="{{ onSubmitClick }}" style="background:#ed3101;color:#fff;border:none;border-radius:8px;padding:12px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">Submit</button>
+          <button onClick="{{ onCancel }}" style="background:#fff;color:#0f4d42;border:1px solid #0f4d42;border-radius:8px;padding:12px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#eef6f3;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">{{ t.cancel }}</button>
+          <button onClick="{{ onSubmitClick }}" style="background:#ed3101;color:#fff;border:none;border-radius:8px;padding:12px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">{{ t.submit }}</button>
         </div>
       </div>
     </div>
@@ -399,9 +202,9 @@
         <div style="width:56px;height:56px;border-radius:50%;background:#eaf4f1;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
           <i class="ph ph-check-circle" style="font-size:30px;color:#0f4d42;"></i>
         </div>
-        <div style="font-size:20px;font-weight:700;color:#0f4d42;margin-bottom:8px;">Submitted &amp; Locked</div>
-        <div style="font-size:14px;color:#6b6252;line-height:1.6;margin-bottom:24px;">Thank you. Your responses have been recorded and this ID (<strong>{{ employeeId }}</strong>) is now locked — it cannot be used to edit or resubmit this survey.</div>
-        <button onClick="{{ onCancel }}" style="background:#0f4d42;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#0b3a32;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">Done</button>
+        <div style="font-size:20px;font-weight:700;color:#0f4d42;margin-bottom:8px;">{{ t.doneTitle }}</div>
+        <div style="font-size:14px;color:#6b6252;line-height:1.6;margin-bottom:24px;">{{ t.doneMsg }} (<strong>{{ employeeId }}</strong>) {{ t.doneLocked }}</div>
+        <button onClick="{{ onCancel }}" style="background:#0f4d42;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#0b3a32;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">{{ t.done }}</button>
       </div>
     </div>
   </sc-if>
@@ -413,11 +216,11 @@
           <div style="width:36px;height:36px;border-radius:50%;background:#fdece7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <i class="ph ph-warning-circle" style="font-size:20px;color:#ed3101;"></i>
           </div>
-          <div style="font-size:17px;font-weight:700;color:#ed3101;">Please fix the following</div>
+          <div style="font-size:17px;font-weight:700;color:#ed3101;">{{ t.fixTitle }}</div>
         </div>
-        <div style="font-size:13px;color:#4a4436;line-height:1.8;margin-bottom:22px;max-height:300px;overflow-y:auto;">{{ validationError }}</div>
+        <div style="font-size:13px;color:#4a4436;line-height:1.8;margin-bottom:22px;max-height:300px;overflow-y:auto;white-space:pre-line;">{{ validationError }}</div>
         <div style="display:flex;justify-content:flex-end;">
-          <button onClick="{{ onCloseValidation }}" style="background:#ed3101;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;">OK, fix it</button>
+          <button onClick="{{ onCloseValidation }}" style="background:#ed3101;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;">{{ t.fixBtn }}</button>
         </div>
       </div>
     </div>
@@ -426,11 +229,11 @@
   <sc-if value="{{ showConfirm }}" hint-placeholder-val="{{ false }}">
     <div style="position:fixed;inset:0;background:rgba(15,20,15,0.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;">
       <div style="background:#ffffff;border-radius:16px;padding:28px;max-width:420px;box-shadow:0 12px 40px rgba(0,0,0,0.3);">
-        <div style="font-size:17px;font-weight:700;color:#0f4d42;margin-bottom:10px;">Confirm submission</div>
-        <div style="font-size:14px;color:#4a4436;line-height:1.6;margin-bottom:22px;">By submitting, you confirm all information provided is accurate and complete, and you are responsible for it. Once submitted, this form and your ID cannot be edited again.</div>
+        <div style="font-size:17px;font-weight:700;color:#0f4d42;margin-bottom:10px;">{{ t.confirmTitle }}</div>
+        <div style="font-size:14px;color:#4a4436;line-height:1.6;margin-bottom:22px;">{{ t.confirmMsg }}</div>
         <div style="display:flex;justify-content:flex-end;gap:10px;">
-          <button onClick="{{ onGoBackModal }}" style="background:#fff;color:#0f4d42;border:1px solid #0f4d42;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#eef6f3;">Go Back</button>
-          <button onClick="{{ onConfirmSubmit }}" style="background:#ed3101;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;">Submit &amp; Lock</button>
+          <button onClick="{{ onGoBackModal }}" style="background:#fff;color:#0f4d42;border:1px solid #0f4d42;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#eef6f3;">{{ t.goBack }}</button>
+          <button onClick="{{ onConfirmSubmit }}" style="background:#ed3101;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;">{{ t.submitLock }}</button>
         </div>
       </div>
     </div>
@@ -445,8 +248,162 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.SHEET_URL = 'https://script.google.com/macros/s/AKfycbzlK89p2fbWWuqnikKpmodaQqG5VhBqamexeWZ0gYqJYCn3CkdisolEgSJhyIH73aBFBQ/exec';
-    this.employeeList = []; // [{ id, status }] loaded from sheet
+    this.employeeList = [];
     this.fieldNames = ['firstNameEn','secondNameEn','thirdNameEn','familyNameEn','firstNameAr','secondNameAr','thirdNameAr','familyNameAr','email','mobile','whatsappCode','whatsappNumber','dob','gender','maritalStatus','addressEn','addressAr','idExpiry','idCopyNumber','healthCardYes','healthCardNo','passportNumber','passportExpiry','degree','nationalAddress','nationality'];
+
+    this.translations = {
+      en: {
+        verifyTitle:'Employee Verification', verifySubtitle:'Enter your ID / Iqama number to start the Milad employee survey.',
+        idLabel:'ID / Iqama Number', verifyNote:"Your ID is checked against Milad's employee records.",
+        formTitle:'Employee Information', formSubtitle:'Please complete all required fields marked with',
+        secNameEN:'Employee Name — English', secNameAR:'Employee Name — Arabic',
+        secContact:'Contact', secPersonal:'Personal Details', secDocs:'Documents', secAdditional:'Additional Information',
+        firstName:'First Name', secondName:'Second Name', thirdName:'Third Name', familyName:'Family Name',
+        email:'Email Address', mobile:'Mobile Number', absher:'(Registered with Absher)', whatsapp:'WhatsApp Number (Home Country)',
+        dob:'Date of Birth', gender:'Gender', marital:'Marital Status',
+        addressEn:'Address — English (Home Country)', idNumber:'ID Number / Iqama Number',
+        idExpiry:'ID / Iqama Expiry Date', idCopy:'ID Copy Number',
+        healthCard:'Do you have a Health Card?', passport:'Passport Number', passportExpiry:'Passport Expiry Date',
+        degree:'Degree (Optional)', nationalAddress:'National Address (Optional)', nationality:'Nationality',
+        select:'-- Select --', male:'Male', female:'Female',
+        single:'Single', married:'Married', divorced:'Divorced', widowed:'Widowed',
+        yes:'Yes', no:'No', cancel:'Cancel', submit:'Submit', goBack:'Go Back', submitLock:'Submit & Lock', done:'Done',
+        confirmTitle:'Confirm submission', confirmMsg:'By submitting, you confirm all information provided is accurate and complete, and you are responsible for it. Once submitted, this form and your ID cannot be edited again.',
+        doneTitle:'Submitted & Locked', doneMsg:'Thank you. Your responses have been recorded and this ID', doneLocked:'is now locked — it cannot be used to edit or resubmit this survey.',
+        fixTitle:'Please fix the following', fixBtn:'OK, fix it',
+        errNotFound:'ID not found. Please check the number, or contact HR.',
+        errLocked:'This ID has already completed the survey and is locked.',
+        errEmpty:'Please enter your ID number.',
+        errLoading:'Still loading employee list, please wait...',
+        errLoadFail:'Could not load employee list. Please refresh the page and try again.',
+        missingPrefix:'Missing required fields: ', invalidEmail:'Email Address must be a valid format (e.g. name@domain.com)',
+        invalidMobile:'Mobile Number must be 9 digits starting with 5 (e.g. 5XXXXXXXX)',
+        invalidWhatsapp:'WhatsApp Number must contain digits only',
+        invalidPassport:'Passport Number must contain letters and numbers only',
+        invalidIdCopy:'ID Copy Number must contain digits only'
+      },
+      ar: {
+        verifyTitle:'التحقق من الموظف', verifySubtitle:'أدخل رقم الهوية أو الإقامة للبدء في استبيان موظفي ميلاد.',
+        idLabel:'رقم الهوية / الإقامة', verifyNote:'يتم التحقق من هويتك مقابل سجلات موظفي ميلاد.',
+        formTitle:'معلومات الموظف', formSubtitle:'يرجى ملء جميع الحقول المطلوبة المشار إليها بـ',
+        secNameEN:'اسم الموظف — إنجليزي', secNameAR:'اسم الموظف — عربي',
+        secContact:'معلومات التواصل', secPersonal:'البيانات الشخصية', secDocs:'المستندات', secAdditional:'معلومات إضافية',
+        firstName:'الاسم الأول', secondName:'الاسم الثاني', thirdName:'الاسم الثالث', familyName:'اسم العائلة',
+        email:'البريد الإلكتروني', mobile:'رقم الجوال', absher:'(مسجل في أبشر)', whatsapp:'رقم واتساب (بلد الإقامة)',
+        dob:'تاريخ الميلاد', gender:'الجنس', marital:'الحالة الاجتماعية',
+        addressEn:'العنوان — إنجليزي (بلد الإقامة)', idNumber:'رقم الهوية / الإقامة',
+        idExpiry:'تاريخ انتهاء الهوية / الإقامة', idCopy:'رقم نسخة الهوية',
+        healthCard:'هل تمتلك بطاقة صحية؟', passport:'رقم جواز السفر', passportExpiry:'تاريخ انتهاء جواز السفر',
+        degree:'الدرجة العلمية (اختياري)', nationalAddress:'العنوان الوطني (اختياري)', nationality:'الجنسية',
+        select:'-- اختر --', male:'ذكر', female:'أنثى',
+        single:'أعزب', married:'متزوج', divorced:'مطلق', widowed:'أرمل',
+        yes:'نعم', no:'لا', cancel:'إلغاء', submit:'إرسال', goBack:'رجوع', submitLock:'إرسال وتأمين', done:'تم',
+        confirmTitle:'تأكيد الإرسال', confirmMsg:'بالإرسال، تؤكد أن جميع المعلومات المقدمة دقيقة وكاملة وأنت مسؤول عنها. بعد الإرسال، لا يمكن تعديل هذا النموذج أو إعادة إرساله.',
+        doneTitle:'تم الإرسال والتأمين', doneMsg:'شكراً. تم تسجيل ردودك وتأمين هذه الهوية', doneLocked:'— لا يمكن استخدامها لتعديل أو إعادة إرسال هذا الاستبيان.',
+        fixTitle:'يرجى تصحيح ما يلي', fixBtn:'حسناً، سأصلح ذلك',
+        errNotFound:'الهوية غير موجودة. يرجى التحقق من الرقم أو التواصل مع الموارد البشرية.',
+        errLocked:'هذه الهوية أكملت الاستبيان بالفعل وتم تأمينها.',
+        errEmpty:'يرجى إدخال رقم الهوية.',
+        errLoading:'جارٍ تحميل قائمة الموظفين، يرجى الانتظار...',
+        errLoadFail:'تعذر تحميل قائمة الموظفين. يرجى تحديث الصفحة والمحاولة مرة أخرى.',
+        missingPrefix:'الحقول المطلوبة الناقصة: ', invalidEmail:'يجب أن يكون البريد الإلكتروني بتنسيق صحيح',
+        invalidMobile:'يجب أن يتكون رقم الجوال من 9 أرقام تبدأ بـ 5',
+        invalidWhatsapp:'يجب أن يحتوي رقم واتساب على أرقام فقط',
+        invalidPassport:'يجب أن يحتوي رقم جواز السفر على حروف وأرقام فقط',
+        invalidIdCopy:'يجب أن يحتوي رقم نسخة الهوية على أرقام فقط'
+      },
+      tr: {
+        verifyTitle:'Çalışan Doğrulama', verifySubtitle:'Milad çalışan anketini başlatmak için kimlik / ikamet numaranızı girin.',
+        idLabel:'Kimlik / İkamet Numarası', verifyNote:"Kimliğiniz Milad'ın çalışan kayıtlarına göre kontrol edilir.",
+        formTitle:'Çalışan Bilgileri', formSubtitle:'Yıldız işaretiyle işaretlenmiş tüm zorunlu alanları doldurun',
+        secNameEN:'Çalışan Adı — İngilizce', secNameAR:'Çalışan Adı — Arapça',
+        secContact:'İletişim', secPersonal:'Kişisel Bilgiler', secDocs:'Belgeler', secAdditional:'Ek Bilgiler',
+        firstName:'Ad', secondName:'İkinci Ad', thirdName:'Üçüncü Ad', familyName:'Soyadı',
+        email:'E-posta Adresi', mobile:'Cep Telefonu', absher:'(Absher ile kayıtlı)', whatsapp:'WhatsApp Numarası (Ev Ülkesi)',
+        dob:'Doğum Tarihi', gender:'Cinsiyet', marital:'Medeni Durum',
+        addressEn:'Adres — İngilizce (Ev Ülkesi)', idNumber:'Kimlik / İkamet Numarası',
+        idExpiry:'Kimlik / İkamet Son Kullanma Tarihi', idCopy:'Kimlik Kopya Numarası',
+        healthCard:'Sağlık kartınız var mı?', passport:'Pasaport Numarası', passportExpiry:'Pasaport Son Kullanma Tarihi',
+        degree:'Derece (İsteğe Bağlı)', nationalAddress:'Ulusal Adres (İsteğe Bağlı)', nationality:'Uyruk',
+        select:'-- Seçin --', male:'Erkek', female:'Kadın',
+        single:'Bekar', married:'Evli', divorced:'Boşanmış', widowed:'Dul',
+        yes:'Evet', no:'Hayır', cancel:'İptal', submit:'Gönder', goBack:'Geri Dön', submitLock:'Gönder ve Kilitle', done:'Tamam',
+        confirmTitle:'Gönderimi Onayla', confirmMsg:'Göndererek, sağlanan tüm bilgilerin doğru ve eksiksiz olduğunu ve bunlardan sorumlu olduğunuzu onaylarsınız. Gönderildikten sonra bu form ve kimliğiniz düzenlenemez.',
+        doneTitle:'Gönderildi ve Kilitlendi', doneMsg:'Teşekkürler. Yanıtlarınız kaydedildi ve bu kimlik', doneLocked:'artık kilitlendi — bu anketi düzenlemek veya yeniden göndermek için kullanılamaz.',
+        fixTitle:'Lütfen şunları düzeltin', fixBtn:'Tamam, düzelteceğim',
+        errNotFound:'Kimlik bulunamadı. Lütfen numarayı kontrol edin veya İK ile iletişime geçin.',
+        errLocked:'Bu kimlik anketi zaten tamamladı ve kilitlendi.',
+        errEmpty:'Lütfen kimlik numaranızı girin.',
+        errLoading:'Çalışan listesi yükleniyor, lütfen bekleyin...',
+        errLoadFail:'Çalışan listesi yüklenemedi. Lütfen sayfayı yenileyin ve tekrar deneyin.',
+        missingPrefix:'Eksik zorunlu alanlar: ', invalidEmail:'E-posta adresi geçerli bir formatta olmalıdır',
+        invalidMobile:'Cep telefonu numarası 5 ile başlayan 9 haneli olmalıdır',
+        invalidWhatsapp:'WhatsApp numarası yalnızca rakamlardan oluşmalıdır',
+        invalidPassport:'Pasaport numarası yalnızca harf ve rakamlardan oluşmalıdır',
+        invalidIdCopy:'Kimlik kopya numarası yalnızca rakamlardan oluşmalıdır'
+      },
+      ur: {
+        verifyTitle:'ملازم کی تصدیق', verifySubtitle:'میلاد ملازم سروے شروع کرنے کے لیے اپنا شناختی / اقامہ نمبر درج کریں۔',
+        idLabel:'شناختی / اقامہ نمبر', verifyNote:'آپ کی شناخت میلاد کے ملازم ریکارڈ سے تصدیق کی جائے گی۔',
+        formTitle:'ملازم کی معلومات', formSubtitle:'تمام ضروری خانے پُر کریں جن پر',
+        secNameEN:'ملازم کا نام — انگریزی', secNameAR:'ملازم کا نام — عربی',
+        secContact:'رابطہ معلومات', secPersonal:'ذاتی تفصیلات', secDocs:'دستاویزات', secAdditional:'اضافی معلومات',
+        firstName:'پہلا نام', secondName:'دوسرا نام', thirdName:'تیسرا نام', familyName:'خاندانی نام',
+        email:'ای میل ایڈریس', mobile:'موبائل نمبر', absher:'(ابشر میں رجسٹرڈ)', whatsapp:'واٹس ایپ نمبر (گھر کا ملک)',
+        dob:'تاریخ پیدائش', gender:'جنس', marital:'ازدواجی حیثیت',
+        addressEn:'پتہ — انگریزی (گھر کا ملک)', idNumber:'شناختی / اقامہ نمبر',
+        idExpiry:'شناختی / اقامہ میعاد ختم ہونے کی تاریخ', idCopy:'شناختی کاپی نمبر',
+        healthCard:'کیا آپ کے پاس ہیلتھ کارڈ ہے؟', passport:'پاسپورٹ نمبر', passportExpiry:'پاسپورٹ میعاد ختم ہونے کی تاریخ',
+        degree:'تعلیمی ڈگری (اختیاری)', nationalAddress:'قومی پتہ (اختیاری)', nationality:'قومیت',
+        select:'-- منتخب کریں --', male:'مرد', female:'عورت',
+        single:'غیر شادی شدہ', married:'شادی شدہ', divorced:'طلاق یافتہ', widowed:'بیوہ',
+        yes:'ہاں', no:'نہیں', cancel:'منسوخ', submit:'جمع کریں', goBack:'واپس جائیں', submitLock:'جمع کریں اور بند کریں', done:'ہو گیا',
+        confirmTitle:'جمع کرانے کی تصدیق', confirmMsg:'جمع کرانے سے آپ تصدیق کرتے ہیں کہ تمام معلومات درست اور مکمل ہیں اور آپ اس کے ذمہ دار ہیں۔ جمع کرانے کے بعد یہ فارم دوبارہ تبدیل یا جمع نہیں کیا جا سکتا۔',
+        doneTitle:'جمع اور بند ہو گیا', doneMsg:'شکریہ۔ آپ کے جوابات ریکارڈ کر لیے گئے ہیں اور یہ شناخت', doneLocked:'اب بند ہو گئی ہے — اسے دوبارہ تبدیل یا جمع کرانے کے لیے استعمال نہیں کیا جا سکتا۔',
+        fixTitle:'براہ کرم درج ذیل کو درست کریں', fixBtn:'ٹھیک ہے، درست کرتا ہوں',
+        errNotFound:'شناخت نہیں ملی۔ نمبر چیک کریں یا HR سے رابطہ کریں۔',
+        errLocked:'اس شناخت نے پہلے ہی سروے مکمل کر لیا ہے اور بند ہو گئی ہے۔',
+        errEmpty:'براہ کرم اپنا شناختی نمبر درج کریں۔',
+        errLoading:'ملازم کی فہرست لوڈ ہو رہی ہے، براہ کرم انتظار کریں...',
+        errLoadFail:'ملازم کی فہرست لوڈ نہیں ہو سکی۔ براہ کرم صفحہ ریفریش کریں اور دوبارہ کوشش کریں۔',
+        missingPrefix:'ضروری خانے خالی ہیں: ', invalidEmail:'ای میل ایڈریس درست فارمیٹ میں ہونا چاہیے',
+        invalidMobile:'موبائل نمبر 5 سے شروع ہونے والے 9 ہندسے ہونے چاہئیں',
+        invalidWhatsapp:'واٹس ایپ نمبر میں صرف ہندسے ہونے چاہئیں',
+        invalidPassport:'پاسپورٹ نمبر میں صرف حروف اور ہندسے ہونے چاہئیں',
+        invalidIdCopy:'شناختی کاپی نمبر میں صرف ہندسے ہونے چاہئیں'
+      },
+      bn: {
+        verifyTitle:'কর্মচারী যাচাইকরণ', verifySubtitle:'মিলাদ কর্মচারী জরিপ শুরু করতে আপনার আইডি / ইকামা নম্বর লিখুন।',
+        idLabel:'আইডি / ইকামা নম্বর', verifyNote:'আপনার আইডি মিলাদের কর্মচারী রেকর্ডের বিপরীতে যাচাই করা হবে।',
+        formTitle:'কর্মচারীর তথ্য', formSubtitle:'চিহ্নিত সমস্ত প্রয়োজনীয় ক্ষেত্র পূরণ করুন',
+        secNameEN:'কর্মচারীর নাম — ইংরেজি', secNameAR:'কর্মচারীর নাম — আরবি',
+        secContact:'যোগাযোগ', secPersonal:'ব্যক্তিগত বিবরণ', secDocs:'নথিপত্র', secAdditional:'অতিরিক্ত তথ্য',
+        firstName:'প্রথম নাম', secondName:'দ্বিতীয় নাম', thirdName:'তৃতীয় নাম', familyName:'পারিবারিক নাম',
+        email:'ইমেইল ঠিকানা', mobile:'মোবাইল নম্বর', absher:'(আবশেরে নিবন্ধিত)', whatsapp:'হোয়াটসঅ্যাপ নম্বর (নিজ দেশ)',
+        dob:'জন্ম তারিখ', gender:'লিঙ্গ', marital:'বৈবাহিক অবস্থা',
+        addressEn:'ঠিকানা — ইংরেজি (নিজ দেশ)', idNumber:'আইডি / ইকামা নম্বর',
+        idExpiry:'আইডি / ইকামা মেয়াদ শেষের তারিখ', idCopy:'আইডি কপি নম্বর',
+        healthCard:'আপনার কি স্বাস্থ্য কার্ড আছে?', passport:'পাসপোর্ট নম্বর', passportExpiry:'পাসপোর্ট মেয়াদ শেষের তারিখ',
+        degree:'ডিগ্রি (ঐচ্ছিক)', nationalAddress:'জাতীয় ঠিকানা (ঐচ্ছিক)', nationality:'জাতীয়তা',
+        select:'-- নির্বাচন করুন --', male:'পুরুষ', female:'মহিলা',
+        single:'অবিবাহিত', married:'বিবাহিত', divorced:'তালাকপ্রাপ্ত', widowed:'বিধবা',
+        yes:'হ্যাঁ', no:'না', cancel:'বাতিল', submit:'জমা দিন', goBack:'ফিরে যান', submitLock:'জমা দিন এবং লক করুন', done:'সম্পন্ন',
+        confirmTitle:'জমা দেওয়া নিশ্চিত করুন', confirmMsg:'জমা দেওয়ার মাধ্যমে আপনি নিশ্চিত করছেন যে সমস্ত তথ্য সঠিক ও সম্পূর্ণ এবং আপনি এর জন্য দায়ী। জমা দেওয়ার পরে এই ফর্ম বা আইডি আর সম্পাদনা করা যাবে না।',
+        doneTitle:'জমা দেওয়া এবং লক করা হয়েছে', doneMsg:'ধন্যবাদ। আপনার উত্তর রেকর্ড করা হয়েছে এবং এই আইডি', doneLocked:'এখন লক করা হয়েছে — এটি এই জরিপ সম্পাদনা বা পুনরায় জমা দিতে ব্যবহার করা যাবে না।',
+        fixTitle:'অনুগ্রহ করে নিচেরগুলো ঠিক করুন', fixBtn:'ঠিক আছে, সংশোধন করব',
+        errNotFound:'আইডি পাওয়া যায়নি। নম্বরটি যাচাই করুন অথবা HR-এর সাথে যোগাযোগ করুন।',
+        errLocked:'এই আইডি ইতিমধ্যে জরিপ সম্পন্ন করেছে এবং লক করা হয়েছে।',
+        errEmpty:'অনুগ্রহ করে আপনার আইডি নম্বর লিখুন।',
+        errLoading:'কর্মচারী তালিকা লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...',
+        errLoadFail:'কর্মচারী তালিকা লোড করা যায়নি। পৃষ্ঠাটি রিফ্রেশ করুন এবং আবার চেষ্টা করুন।',
+        missingPrefix:'প্রয়োজনীয় ক্ষেত্র খালি: ', invalidEmail:'ইমেইল ঠিকানা সঠিক ফরম্যাটে হতে হবে',
+        invalidMobile:'মোবাইল নম্বর ৫ দিয়ে শুরু ৯ সংখ্যার হতে হবে',
+        invalidWhatsapp:'হোয়াটসঅ্যাপ নম্বরে শুধুমাত্র সংখ্যা থাকতে হবে',
+        invalidPassport:'পাসপোর্ট নম্বরে শুধুমাত্র অক্ষর ও সংখ্যা থাকতে হবে',
+        invalidIdCopy:'আইডি কপি নম্বরে শুধুমাত্র সংখ্যা থাকতে হবে'
+      }
+    };
+
     this.labels = {
       firstNameEn:'First Name (English)', secondNameEn:'Second Name (English)', thirdNameEn:'Third Name (English)', familyNameEn:'Family Name (English)',
       firstNameAr:'First Name (Arabic)', secondNameAr:'Second Name (Arabic)', thirdNameAr:'Third Name (Arabic)', familyNameAr:'Family Name (Arabic)',
@@ -460,7 +417,7 @@ class Component extends DCLogic {
       this.elRefs[n] = null;
       this.refs_[n] = (el) => { this.elRefs[n] = el; };
     });
-    this.state = { step: 'verify', idInput: '', idError: '', employeeId: '', validationError: '', showConfirm: false, showValidationError: false, loadingIds: true, loadError: '' };
+    this.state = { lang:'en', step:'verify', idInput:'', idError:'', employeeId:'', validationError:'', showConfirm:false, showValidationError:false, loadingIds:true, loadError:'' };
   }
 
   componentDidMount() {
@@ -471,25 +428,25 @@ class Component extends DCLogic {
         this.setState({ loadingIds: false });
       })
       .catch(() => {
-        this.setState({ loadingIds: false, loadError: 'Could not load employee list. Please refresh the page and try again.' });
+        this.setState({ loadingIds: false, loadError: this.translations[this.state.lang].errLoadFail });
       });
   }
 
   handleIdInputChange = (e) => this.setState({ idInput: e.target.value, idError: '' });
 
   handleVerify = () => {
+    const t = this.translations[this.state.lang];
     const id = this.state.idInput.trim();
-    if (!id) { this.setState({ idError: 'Please enter your ID number.' }); return; }
-    if (this.state.loadingIds) { this.setState({ idError: 'Still loading employee list, please wait...' }); return; }
+    if (!id) { this.setState({ idError: t.errEmpty }); return; }
+    if (this.state.loadingIds) { this.setState({ idError: t.errLoading }); return; }
     const match = this.employeeList.find(e => String(e.id).trim() === id);
-    if (!match) { this.setState({ idError: 'ID not found. Please check the number, or contact HR.' }); return; }
-    if (String(match.status).trim().toLowerCase() === 'submitted') {
-      this.setState({ idError: 'This ID has already completed the survey and is locked.' }); return;
-    }
+    if (!match) { this.setState({ idError: t.errNotFound }); return; }
+    if (String(match.status).trim().toLowerCase() === 'submitted') { this.setState({ idError: t.errLocked }); return; }
     this.setState({ employeeId: id, step: 'survey', idError: '' });
   };
 
   gatherMissing = () => {
+    const t = this.translations[this.state.lang];
     const requiredSimple = ['firstNameEn','secondNameEn','thirdNameEn','familyNameEn','firstNameAr','secondNameAr','thirdNameAr','familyNameAr','email','mobile','whatsappCode','whatsappNumber','dob','gender','maritalStatus','addressEn','addressAr','idExpiry','idCopyNumber','passportNumber','passportExpiry','nationality'];
     const missing = [];
     requiredSimple.forEach((n) => {
@@ -502,67 +459,63 @@ class Component extends DCLogic {
   };
 
   gatherInvalid = () => {
+    const t = this.translations[this.state.lang];
     const errors = [];
     const r = this.elRefs;
     const email = r.email ? r.email.value.trim() : '';
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      errors.push('Email Address must be a valid format (e.g. name@domain.com)');
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push(t.invalidEmail);
     const mobile = r.mobile ? r.mobile.value.trim() : '';
-    if (mobile && !/^5\d{8}$/.test(mobile))
-      errors.push('Mobile Number must be 9 digits starting with 5 (e.g. 5XXXXXXXX)');
+    if (mobile && !/^5\d{8}$/.test(mobile)) errors.push(t.invalidMobile);
     const whatsapp = r.whatsappNumber ? r.whatsappNumber.value.trim() : '';
-    if (whatsapp && !/^\d+$/.test(whatsapp))
-      errors.push('WhatsApp Number must contain digits only');
+    if (whatsapp && !/^\d+$/.test(whatsapp)) errors.push(t.invalidWhatsapp);
     const passport = r.passportNumber ? r.passportNumber.value.trim() : '';
-    if (passport && !/^[A-Za-z0-9]+$/.test(passport))
-      errors.push('Passport Number must contain letters and numbers only');
+    if (passport && !/^[A-Za-z0-9]+$/.test(passport)) errors.push(t.invalidPassport);
     const idCopy = r.idCopyNumber ? r.idCopyNumber.value.trim() : '';
-    if (idCopy && !/^\d+$/.test(idCopy))
-      errors.push('ID Copy Number must contain digits only');
+    if (idCopy && !/^\d+$/.test(idCopy)) errors.push(t.invalidIdCopy);
     return errors;
   };
 
   handleSubmitClick = () => {
+    const t = this.translations[this.state.lang];
     const missing = this.gatherMissing();
     const invalid = this.gatherInvalid();
     const all = [];
-    if (missing.length) all.push('Missing required fields: ' + missing.join(', '));
+    if (missing.length) all.push(t.missingPrefix + missing.join(', '));
     if (invalid.length) invalid.forEach(e => all.push(e));
     if (all.length) { this.setState({ validationError: all.join('\n'), showValidationError: true }); return; }
     this.setState({ showConfirm: true, validationError: '' });
   };
 
   handleGoBackModal = () => this.setState({ showConfirm: false });
-
   handleCloseValidation = () => this.setState({ showValidationError: false });
 
   handleConfirmSubmit = () => {
     const r = this.elRefs;
     const data = {
-      idNumber:        this.state.employeeId,
-      nameEnFirst:     r.firstNameEn    ? r.firstNameEn.value    : '',
-      nameEnSecond:    r.secondNameEn   ? r.secondNameEn.value   : '',
-      nameEnThird:     r.thirdNameEn    ? r.thirdNameEn.value    : '',
-      nameEnFamily:    r.familyNameEn   ? r.familyNameEn.value   : '',
-      nameArFirst:     r.firstNameAr    ? r.firstNameAr.value    : '',
-      nameArSecond:    r.secondNameAr   ? r.secondNameAr.value   : '',
-      nameArThird:     r.thirdNameAr    ? r.thirdNameAr.value    : '',
-      nameArFamily:    r.familyNameAr   ? r.familyNameAr.value   : '',
-      email:           r.email          ? r.email.value          : '',
-      mobile:          '+966' + (r.mobile ? r.mobile.value : ''),
-      whatsapp:        (r.whatsappCode ? r.whatsappCode.value : '') + (r.whatsappNumber ? r.whatsappNumber.value : ''),
-      dob:             r.dob            ? r.dob.value            : '',
-      gender:          r.gender         ? r.gender.value         : '',
-      maritalStatus:   r.maritalStatus  ? r.maritalStatus.value  : '',
-      addressEn:       r.addressEn      ? r.addressEn.value      : '',
-      addressAr:       r.addressAr      ? r.addressAr.value      : '',
-      idExpiry:        r.idExpiry       ? r.idExpiry.value       : '',
-      idCopyNumber:    r.idCopyNumber   ? r.idCopyNumber.value   : '',
-      healthCard:      (r.healthCardYes && r.healthCardYes.checked) ? 'Yes' : 'No',
-      passportNumber:  r.passportNumber  ? r.passportNumber.value  : '',
-      passportExpiry:  r.passportExpiry  ? r.passportExpiry.value  : '',
-      nationality:     r.nationality     ? r.nationality.value     : '',
-      degree:          r.degree          ? r.degree.value          : '',
+      idNumber: this.state.employeeId,
+      nameEnFirst: r.firstNameEn ? r.firstNameEn.value : '',
+      nameEnSecond: r.secondNameEn ? r.secondNameEn.value : '',
+      nameEnThird: r.thirdNameEn ? r.thirdNameEn.value : '',
+      nameEnFamily: r.familyNameEn ? r.familyNameEn.value : '',
+      nameArFirst: r.firstNameAr ? r.firstNameAr.value : '',
+      nameArSecond: r.secondNameAr ? r.secondNameAr.value : '',
+      nameArThird: r.thirdNameAr ? r.thirdNameAr.value : '',
+      nameArFamily: r.familyNameAr ? r.familyNameAr.value : '',
+      email: r.email ? r.email.value : '',
+      mobile: '+966' + (r.mobile ? r.mobile.value : ''),
+      whatsapp: (r.whatsappCode ? r.whatsappCode.value : '') + (r.whatsappNumber ? r.whatsappNumber.value : ''),
+      dob: r.dob ? r.dob.value : '',
+      gender: r.gender ? r.gender.value : '',
+      maritalStatus: r.maritalStatus ? r.maritalStatus.value : '',
+      addressEn: r.addressEn ? r.addressEn.value : '',
+      addressAr: r.addressAr ? r.addressAr.value : '',
+      idExpiry: r.idExpiry ? r.idExpiry.value : '',
+      idCopyNumber: r.idCopyNumber ? r.idCopyNumber.value : '',
+      healthCard: (r.healthCardYes && r.healthCardYes.checked) ? 'Yes' : 'No',
+      passportNumber: r.passportNumber ? r.passportNumber.value : '',
+      passportExpiry: r.passportExpiry ? r.passportExpiry.value : '',
+      nationality: r.nationality ? r.nationality.value : '',
+      degree: r.degree ? r.degree.value : '',
       nationalAddress: r.nationalAddress ? r.nationalAddress.value : ''
     };
 
@@ -572,10 +525,8 @@ class Component extends DCLogic {
       body: JSON.stringify(data)
     }).catch(() => {});
 
-    // Update local employeeList status so same session blocks re-entry
     const idx = this.employeeList.findIndex(e => String(e.id).trim() === this.state.employeeId);
     if (idx !== -1) this.employeeList[idx].status = 'Submitted';
-
     this.setState({ showConfirm: false, step: 'done' });
   };
 
@@ -584,28 +535,48 @@ class Component extends DCLogic {
     this.setState({ step: 'verify', idInput: '', idError: '', employeeId: '', validationError: '' });
   };
 
+  setLang = (lang) => this.setState({ lang });
+
   renderVals() {
+    const { lang } = this.state;
+    const t = this.translations[lang];
+    const isRTL = lang === 'ar' || lang === 'ur';
+    const btnBase = 'padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;';
+    const btnActive = btnBase + 'background:#0f4d42;color:#ffffff;border:none;';
+    const btnInactive = btnBase + 'border:1px solid #d9c9a0;color:#8a7a52;background:transparent;';
     const inputStyle = "width:100%;box-sizing:border-box;border:1px solid #d9c9a0;border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;background:#fff;color:#1b1b1b;";
     const inputFocusStyle = "border-color:#fba91f;box-shadow:0 0 0 3px rgba(251,169,31,0.25);outline:none;";
     return {
+      t, lang,
+      pageDir: isRTL ? 'rtl' : 'ltr',
+      langBtnEN: lang==='en' ? btnActive : btnInactive,
+      langBtnAR: lang==='ar' ? btnActive : btnInactive,
+      langBtnTR: lang==='tr' ? btnActive : btnInactive,
+      langBtnUR: lang==='ur' ? btnActive : btnInactive,
+      langBtnBN: lang==='bn' ? btnActive : btnInactive,
+      onLangEN: () => this.setLang('en'),
+      onLangAR: () => this.setLang('ar'),
+      onLangTR: () => this.setLang('tr'),
+      onLangUR: () => this.setLang('ur'),
+      onLangBN: () => this.setLang('bn'),
       isVerifyStep: this.state.step === 'verify',
       isSurveyStep: this.state.step === 'survey',
       isDoneStep: this.state.step === 'done',
       showConfirm: this.state.showConfirm,
+      showValidationError: this.state.showValidationError,
       loadingIds: this.state.loadingIds,
-      verifyBtnText: this.state.loadingIds ? 'Loading...' : 'Continue',
+      verifyBtnText: this.state.loadingIds ? '...' : ({en:'Continue',ar:'متابعة',tr:'Devam Et',ur:'جاری رکھیں',bn:'চালিয়ে যান'})[lang] || 'Continue',
       loadError: this.state.loadError,
       idInput: this.state.idInput,
       idError: this.state.idError,
       employeeId: this.state.employeeId,
       validationError: this.state.validationError,
-      showValidationError: this.state.showValidationError,
-      onCloseValidation: this.handleCloseValidation,
       onIdInputChange: this.handleIdInputChange,
       onVerify: this.handleVerify,
       onCancel: this.handleReset,
       onSubmitClick: this.handleSubmitClick,
       onGoBackModal: this.handleGoBackModal,
+      onCloseValidation: this.handleCloseValidation,
       onConfirmSubmit: this.handleConfirmSubmit,
       refs: this.refs_,
       inputStyle,
