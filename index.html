@@ -520,12 +520,8 @@ class Component extends DCLogic {
       nationalAddress: r.nationalAddress ? r.nationalAddress.value : ''
     };
 
-    fetch(this.SHEET_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).catch(() => {});
+    const submitUrl = this.SHEET_URL + '?action=submit&data=' + encodeURIComponent(JSON.stringify(data));
+    fetch(submitUrl).catch(() => {});
 
     // Update local employeeList status so same session blocks re-entry
     const idx = this.employeeList.findIndex(e => String(e.id).trim() === this.state.employeeId);
