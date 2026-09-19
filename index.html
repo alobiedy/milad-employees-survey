@@ -482,9 +482,34 @@ class Component extends DCLogic {
     return missing;
   };
 
+  gatherInvalid = () => {
+    const errors = [];
+    const r = this.elRefs;
+    const email = r.email ? r.email.value.trim() : '';
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      errors.push('Email Address must be a valid format (e.g. name@domain.com)');
+    const mobile = r.mobile ? r.mobile.value.trim() : '';
+    if (mobile && !/^5\d{8}$/.test(mobile))
+      errors.push('Mobile Number must be 9 digits starting with 5 (e.g. 5XXXXXXXX)');
+    const whatsapp = r.whatsappNumber ? r.whatsappNumber.value.trim() : '';
+    if (whatsapp && !/^\d+$/.test(whatsapp))
+      errors.push('WhatsApp Number must contain digits only');
+    const passport = r.passportNumber ? r.passportNumber.value.trim() : '';
+    if (passport && !/^[A-Za-z0-9]+$/.test(passport))
+      errors.push('Passport Number must contain letters and numbers only');
+    const idCopy = r.idCopyNumber ? r.idCopyNumber.value.trim() : '';
+    if (idCopy && !/^\d+$/.test(idCopy))
+      errors.push('ID Copy Number must contain digits only');
+    return errors;
+  };
+
   handleSubmitClick = () => {
     const missing = this.gatherMissing();
-    if (missing.length) { this.setState({ validationError: 'Please complete: ' + missing.join(', ') + '.' }); return; }
+    const invalid = this.gatherInvalid();
+    const all = [];
+    if (missing.length) all.push('Missing required fields: ' + missing.join(', '));
+    if (invalid.length) invalid.forEach(e => all.push(e));
+    if (all.length) { this.setState({ validationError: all.join(' | ') }); return; }
     this.setState({ showConfirm: true, validationError: '' });
   };
 
