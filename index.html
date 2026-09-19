@@ -48,7 +48,14 @@
           </div>
         </sc-if>
 
-        <button onClick="{{ onVerify }}" style="width:100%;margin-top:20px;background:#ed3101;color:#ffffff;border:none;border-radius:8px;padding:13px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;" style-active="background:#a82201;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">Continue</button>
+        <sc-if value="{{ loadError }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:8px;align-items:flex-start;margin-top:12px;padding:10px 12px;background:#fdece7;border-radius:8px;border:1px solid #f3b8a5;">
+            <i class="ph ph-warning-circle" style="color:#ed3101;font-size:16px;margin-top:1px;"></i>
+            <div style="font-size:13px;color:#ed3101;line-height:1.4;">{{ loadError }}</div>
+          </div>
+        </sc-if>
+
+        <button onClick="{{ onVerify }}" style="width:100%;margin-top:20px;background:#ed3101;color:#ffffff;border:none;border-radius:8px;padding:13px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;" style-hover="background:#c92a01;" style-active="background:#a82201;" style-focus="outline:2px solid #fba91f;outline-offset:2px;">{{ loadingIds ? 'Loading...' : 'Continue' }}</button>
 
         <div style="font-size:12px;color:#a89a72;margin-top:16px;text-align:center;">Your ID is checked against Milad's employee records.</div>
       </div>
@@ -418,7 +425,8 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.validIds = ['1140799303', '1234567890', '2233445566', '1122334455', '1010101010'];
+    this.SHEET_URL = 'https://script.google.com/macros/s/AKfycbxSCQdD3T5IXDdXT6zI_4-XOxurjnmTtbMb6-x9ilwJGYwFP1_-iXCi8UE2ux7PfKpTlQ/exec';
+    this.employeeList = []; // [{ id, status }] loaded from sheet
     this.fieldNames = ['firstNameEn','secondNameEn','thirdNameEn','familyNameEn','firstNameAr','secondNameAr','thirdNameAr','familyNameAr','email','mobile','whatsappCode','whatsappNumber','dob','gender','maritalStatus','addressEn','addressAr','idExpiry','idCopyNumber','healthCardYes','healthCardNo','passportNumber','passportExpiry','degree','nationalAddress','nationality'];
     this.labels = {
       firstNameEn:'First Name (English)', secondNameEn:'Second Name (English)', thirdNameEn:'Third Name (English)', familyNameEn:'Family Name (English)',
@@ -433,15 +441,19 @@ class Component extends DCLogic {
       this.elRefs[n] = null;
       this.refs_[n] = (el) => { this.elRefs[n] = el; };
     });
-    this.state = { step: 'verify', idInput: '', idError: '', employeeId: '', validationError: '', showConfirm: false, lockedIds: [] };
+    this.state = { step: 'verify', idInput: '', idError: '', employeeId: '', validationError: '', showConfirm: false, loadingIds: true, loadError: '' };
   }
 
   componentDidMount() {
-    try {
-      const raw = window.localStorage.getItem('milad_survey_locked_ids');
-      const lockedIds = raw ? JSON.parse(raw) : [];
-      this.setState({ lockedIds: Array.isArray(lockedIds) ? lockedIds : [] });
-    } catch (e) {}
+    fetch(this.SHEET_URL)
+      .then(r => r.json())
+      .then(data => {
+        this.employeeList = Array.isArray(data.ids) ? data.ids : [];
+        this.setState({ loadingIds: false });
+      })
+      .catch(() => {
+        this.setState({ loadingIds: false, loadError: 'Could not load employee list. Please refresh the page and try again.' });
+      });
   }
 
   handleIdInputChange = (e) => this.setState({ idInput: e.target.value, idError: '' });
@@ -449,8 +461,12 @@ class Component extends DCLogic {
   handleVerify = () => {
     const id = this.state.idInput.trim();
     if (!id) { this.setState({ idError: 'Please enter your ID number.' }); return; }
-    if (!this.validIds.includes(id)) { this.setState({ idError: 'ID not found. Please check the number, or contact HR.' }); return; }
-    if (this.state.lockedIds.includes(id)) { this.setState({ idError: 'This ID has already completed the survey and is locked.' }); return; }
+    if (this.state.loadingIds) { this.setState({ idError: 'Still loading employee list, please wait...' }); return; }
+    const match = this.employeeList.find(e => String(e.id).trim() === id);
+    if (!match) { this.setState({ idError: 'ID not found. Please check the number, or contact HR.' }); return; }
+    if (String(match.status).trim().toLowerCase() === 'submitted') {
+      this.setState({ idError: 'This ID has already completed the survey and is locked.' }); return;
+    }
     this.setState({ employeeId: id, step: 'survey', idError: '' });
   };
 
@@ -504,18 +520,18 @@ class Component extends DCLogic {
       nationalAddress: r.nationalAddress ? r.nationalAddress.value : ''
     };
 
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxSCQdD3T5IXDdXT6zI_4-XOxurjnmTtbMb6-x9ilwJGYwFP1_-iXCi8UE2ux7PfKpTlQ/exec';
-
-    fetch(SHEET_URL, {
+    fetch(this.SHEET_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     }).catch(() => {});
 
-    const lockedIds = this.state.lockedIds.concat([this.state.employeeId]);
-    try { window.localStorage.setItem('milad_survey_locked_ids', JSON.stringify(lockedIds)); } catch (e) {}
-    this.setState({ lockedIds, showConfirm: false, step: 'done' });
+    // Update local employeeList status so same session blocks re-entry
+    const idx = this.employeeList.findIndex(e => String(e.id).trim() === this.state.employeeId);
+    if (idx !== -1) this.employeeList[idx].status = 'Submitted';
+
+    this.setState({ showConfirm: false, step: 'done' });
   };
 
   handleReset = () => {
@@ -531,6 +547,8 @@ class Component extends DCLogic {
       isSurveyStep: this.state.step === 'survey',
       isDoneStep: this.state.step === 'done',
       showConfirm: this.state.showConfirm,
+      loadingIds: this.state.loadingIds,
+      loadError: this.state.loadError,
       idInput: this.state.idInput,
       idError: this.state.idError,
       employeeId: this.state.employeeId,
