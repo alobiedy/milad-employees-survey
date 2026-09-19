@@ -475,6 +475,44 @@ class Component extends DCLogic {
   handleGoBackModal = () => this.setState({ showConfirm: false });
 
   handleConfirmSubmit = () => {
+    const r = this.elRefs;
+    const data = {
+      idNumber:        this.state.employeeId,
+      nameEnFirst:     r.firstNameEn    ? r.firstNameEn.value    : '',
+      nameEnSecond:    r.secondNameEn   ? r.secondNameEn.value   : '',
+      nameEnThird:     r.thirdNameEn    ? r.thirdNameEn.value    : '',
+      nameEnFamily:    r.familyNameEn   ? r.familyNameEn.value   : '',
+      nameArFirst:     r.firstNameAr    ? r.firstNameAr.value    : '',
+      nameArSecond:    r.secondNameAr   ? r.secondNameAr.value   : '',
+      nameArThird:     r.thirdNameAr    ? r.thirdNameAr.value    : '',
+      nameArFamily:    r.familyNameAr   ? r.familyNameAr.value   : '',
+      email:           r.email          ? r.email.value          : '',
+      mobile:          '+966' + (r.mobile ? r.mobile.value : ''),
+      whatsapp:        (r.whatsappCode ? r.whatsappCode.value : '') + (r.whatsappNumber ? r.whatsappNumber.value : ''),
+      dob:             r.dob            ? r.dob.value            : '',
+      gender:          r.gender         ? r.gender.value         : '',
+      maritalStatus:   r.maritalStatus  ? r.maritalStatus.value  : '',
+      addressEn:       r.addressEn      ? r.addressEn.value      : '',
+      addressAr:       r.addressAr      ? r.addressAr.value      : '',
+      idExpiry:        r.idExpiry       ? r.idExpiry.value       : '',
+      idCopyNumber:    r.idCopyNumber   ? r.idCopyNumber.value   : '',
+      healthCard:      (r.healthCardYes && r.healthCardYes.checked) ? 'Yes' : 'No',
+      passportNumber:  r.passportNumber  ? r.passportNumber.value  : '',
+      passportExpiry:  r.passportExpiry  ? r.passportExpiry.value  : '',
+      nationality:     r.nationality     ? r.nationality.value     : '',
+      degree:          r.degree          ? r.degree.value          : '',
+      nationalAddress: r.nationalAddress ? r.nationalAddress.value : ''
+    };
+
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxSCQdD3T5IXDdXT6zI_4-XOxurjnmTtbMb6-x9ilwJGYwFP1_-iXCi8UE2ux7PfKpTlQ/exec';
+
+    fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(() => {});
+
     const lockedIds = this.state.lockedIds.concat([this.state.employeeId]);
     try { window.localStorage.setItem('milad_survey_locked_ids', JSON.stringify(lockedIds)); } catch (e) {}
     this.setState({ lockedIds, showConfirm: false, step: 'done' });
